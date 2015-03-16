@@ -59,13 +59,15 @@ public class RestPropValidation {
 				}
 			}
 		}
-		Iterator<String> finalZeroCheck = json.getJSONObject("0").keys();
-		while (finalZeroCheck.hasNext()) {
-			String temp = finalZeroCheck.next();
-			result[1] = "FAILED";
-			result[0] += seperator + "Pair " + temp + " is expected to be "
-					+ json.getJSONObject("0").getString(temp)
-					+ " but is not found or is not correct";
+		if (json.has("0")){
+			Iterator<String> finalZeroCheck = json.getJSONObject("0").keys();
+			while (finalZeroCheck.hasNext()) {
+				String temp = finalZeroCheck.next();
+				result[1] = "FAILED";
+				result[0] += seperator + "Pair " + temp + " is expected to be "
+						+ json.getJSONObject("0").getString(temp)
+						+ " but is not found or is not correct";
+			}
 		}
 		result[0] += seperator;
 		return result;
@@ -182,7 +184,7 @@ public class RestPropValidation {
 				// " And they are correct"); // HERE!!!
 				correctGroup.add(vKey);
 
-				// TODO: PRINT GROUP DETAILS
+				// TODO: PRINT GROUP DETAILS  MAY BE NOT
 			}
 		}
 
@@ -209,7 +211,7 @@ public class RestPropValidation {
 					// System.out.println("The key " + key +
 					// " is a integer with data " + o);
 				}				
-				if (v.getJSONObject("0").has(key)) {
+				if (v.has("0") && v.getJSONObject("0").has(key)) {
 					// System.out.println("now we found the pair of " + key +
 					// " in group 0");
 					if (v.getJSONObject("0").get(key).toString()

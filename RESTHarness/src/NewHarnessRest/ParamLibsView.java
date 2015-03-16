@@ -2,6 +2,8 @@ package NewHarnessRest;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -11,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.EventObject;
@@ -55,6 +56,7 @@ public class ParamLibsView extends JPanel {
 	public JButton addToRequestButton = new JButton("Add to request");
 	public JButton refreshButton = new JButton("Refresh");
 	private JButton loadLibButton = new JButton("Load Lib");
+	public JButton addToDataButton = new JButton("Copy");
 	String url = "";
 	String libFilePath = "";
 	String tabName = "";
@@ -83,6 +85,7 @@ public class ParamLibsView extends JPanel {
 		buttonPane.add(addToRequestButton);
 		buttonPane.add(refreshButton);
 		buttonPane.add(loadLibButton);
+		buttonPane.add(addToDataButton);
 		
 		loadLibButton.addActionListener(new ActionListener() {
 			@Override
@@ -117,6 +120,8 @@ public class ParamLibsView extends JPanel {
 				}
 			}
 		});
+		
+		
 		
 		this.add(buttonPane);
 	}

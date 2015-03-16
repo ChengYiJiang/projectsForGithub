@@ -4,6 +4,7 @@ public class ForMatJSONStr {
 	  String seperator = System.getProperty("line.separator");
 	  /**
 	   * formatting json data
+	   * This class is used in report not in the JSON data viewer.
 	   */
 	  public String format(String jsonStr) {
 	    int level = 0;

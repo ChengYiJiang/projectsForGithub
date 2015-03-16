@@ -123,8 +123,7 @@ public class beginningUI {
 		
 		JButton saveReportButton = new JButton("Save Report");
 		saveReportButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {				
-				//TODO SAVE THE REPORT
+			public void actionPerformed(ActionEvent event) {
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 				String time = df.format(new Date());
 				chooser.setSelectedFile(new File(time));
@@ -144,8 +143,7 @@ public class beginningUI {
 						}else{							
 							fw.write(ta.getText());
 						}						
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
+					} catch (IOException e1) {						
 						e1.printStackTrace();
 					}
 				}
