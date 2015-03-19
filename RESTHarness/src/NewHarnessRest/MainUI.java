@@ -2,6 +2,8 @@ package NewHarnessRest;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -9,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
@@ -20,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +37,7 @@ public class MainUI {
 	JTextField name;
 	RestRequestView requestView = new RestRequestView();
 	ParamLibsView libsView;
+	private static String seperator = System.getProperty("line.separator");
 	
 	class doubleClick extends MouseAdapter{
 		public void mouseClicked(MouseEvent e) {
@@ -208,38 +213,26 @@ public class MainUI {
 					listFileView.setTargetURL(s + "/api/v1");
 					try {
 						libsView.reconnDB(s.split("://")[1]);
-					} catch (InstantiationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (InstantiationException | IllegalAccessException e) {
+						new JOptionPane().showMessageDialog(mainFrame, "URL set up successfully but there is some exception for DB connecting");
+					} catch (ClassNotFoundException | IOException e) {						
+						e.printStackTrace();					
 					}
 				}
 				else{
 					listFileView.setTargetURL("https://" + s + "/api/v1");
 					try {
 						libsView.reconnDB(s);
-					} catch (InstantiationException e) {
+					} catch (InstantiationException | IllegalAccessException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						new JOptionPane().showMessageDialog(mainFrame, "URL set up successfully but there is some exception for DB connecting");
+					} catch (ClassNotFoundException | IOException e) {
+						// TODO Auto-generated catch block						
 						e.printStackTrace();
 					}
 				}
+				
+				new JOptionPane().showMessageDialog(mainFrame, "URL set up successfully..."); 
 				
 			}
 		});	
@@ -249,7 +242,7 @@ public class MainUI {
         {  
             public void actionPerformed(ActionEvent event) 
             {              	
-            	JFrame fr = new JFrame("DATA VIEWER");				
+            	JFrame fr = new JFrame("JSON DATA VIEWER");				
 				fr.setLayout (new BorderLayout ());
 				fr.setSize (800, 600);
 				fr.setResizable (false);
@@ -262,6 +255,34 @@ public class MainUI {
             }  
         });
 		
+		
+		//9
+		libsView.addToDataButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+					String temp = "";
+					int[] index = libsView.getSelectedTable().getSelectedRows();
+					for (int i=0; i<index.length; i++){
+						temp += "\"" + libsView.getSelectedTable().getValueAt(index[i], 0) + "\":\""
+								+ libsView.getSelectedTable().getValueAt(index[i], 1) + "\"";	
+						if (i != index.length -1)
+							temp += ",";
+						temp += seperator;
+					}
+					StringSelection stsel = new StringSelection(temp);
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stsel, stsel);
+					new JOptionPane().showMessageDialog(mainFrame, "Params are in clipboard now..."); 
+				}
+				catch(NullPointerException e1){
+					new JOptionPane().showMessageDialog(mainFrame, "Please load a lib file..."); 
+				}
+				
+			}
+			
+		});
 		
 	}
 	
