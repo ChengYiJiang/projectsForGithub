@@ -189,17 +189,13 @@ public class MainUI {
 				// TODO Auto-generated method stub	
 				try {
 					libsView.loadLibFromFile();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (IOException e) {					
 					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
+				} catch (InstantiationException e) {					
 					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
+				} catch (IllegalAccessException e) {					
 					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
+				} catch (ClassNotFoundException e) {					
 					e.printStackTrace();
 				}
 			}	    	
@@ -213,9 +209,13 @@ public class MainUI {
 					listFileView.setTargetURL(s + "/api/v1");
 					try {
 						libsView.reconnDB(s.split("://")[1]);
-					} catch (InstantiationException | IllegalAccessException e) {
+					} catch (InstantiationException e) {
 						new JOptionPane().showMessageDialog(mainFrame, "URL set up successfully but there is some exception for DB connecting");
-					} catch (ClassNotFoundException | IOException e) {						
+					}catch (IllegalAccessException e) {
+						new JOptionPane().showMessageDialog(mainFrame, "URL set up successfully but there is some exception for DB connecting");
+					}catch (ClassNotFoundException e) {						
+						e.printStackTrace();					
+					}catch (IOException e) {						
 						e.printStackTrace();					
 					}
 				}
@@ -223,12 +223,14 @@ public class MainUI {
 					listFileView.setTargetURL("https://" + s + "/api/v1");
 					try {
 						libsView.reconnDB(s);
-					} catch (InstantiationException | IllegalAccessException e) {
-						// TODO Auto-generated catch block
+					} catch (IllegalAccessException e) {						
 						new JOptionPane().showMessageDialog(mainFrame, "URL set up successfully but there is some exception for DB connecting");
-					} catch (ClassNotFoundException | IOException e) {
-						// TODO Auto-generated catch block						
+					} catch (ClassNotFoundException e) {											
 						e.printStackTrace();
+					}catch (IOException e) {											
+						e.printStackTrace();
+					} catch (InstantiationException e) {						
+						new JOptionPane().showMessageDialog(mainFrame, "URL set up successfully but there is some exception for DB connecting");
 					}
 				}
 				
