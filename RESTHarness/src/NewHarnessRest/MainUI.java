@@ -334,7 +334,7 @@ public class MainUI {
 		try {
 			new MainUI("").init();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			//???
 			e.printStackTrace();
 		}			
 	}	
