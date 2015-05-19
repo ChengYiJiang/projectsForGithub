@@ -170,7 +170,7 @@ public class RestRequestView extends JPanel{
 	    //SETUP THE COMBOBOX FOR METHOD CELL
 	    String[] values = new String[] { "Item_Create", "Item_Delete", "Item_Retrieve", "Item_Update", 
 	    		"Dataport_Create", "Dataport_Update", "Dataport_Delete", "Dataport_Retrieve", "Location_Update", "Ip_Retrieve", 
-	    		"Ipassignments_Create", "Ipassignments_Delete", "Ipassignments_Update", "Ipassignments_Retrieve"};
+	    		"Ipassignments_Create", "Ipassignments_Delete", "Ipassignments_Update", "Ipassignments_Retrieve", "SmartChart_Create"};
 	    jtable.setComboCell(0, 1, new MyComboBoxEditor(values));
 	    
 	    

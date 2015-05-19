@@ -282,6 +282,7 @@ public class JSONViewer extends JPanel implements ActionListener,
 				
 				try {
 					fromMain.setRawJSONData(new JSONObject(textArea.getText()));
+					//TODO:  FOR VALIDATION PROVIDE SIMILAR FUNCTION
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

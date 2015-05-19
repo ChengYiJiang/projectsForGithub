@@ -17,6 +17,7 @@ public class RESTServiceFactory {
 		serviceMap.put("Location", new locationService());
 		serviceMap.put("Ip", new ipService());
 		serviceMap.put("Ipassignments", new IpassignmentsService());
+		serviceMap.put("SmartChart", new SmartChartService());
 	}
 
 	// service object refresh every time before a step is passed in

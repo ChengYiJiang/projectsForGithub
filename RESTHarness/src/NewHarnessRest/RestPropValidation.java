@@ -11,6 +11,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.*;
 
+
+
+
+//corr() is the entry, will iterate the response json
+//for each level in JSON, it will first use searchGroup() to check if there is group validation matching
+//then corr will do like plain key-value pair validation in GROUP 0
 public class RestPropValidation {
 
 	private HashMap<String, String> overideProps = new HashMap<String, String>();
@@ -96,7 +102,7 @@ public class RestPropValidation {
 			while (groupIter.hasNext()) {
 				String key1 = groupIter.next(); // pair-value
 				// System.out.println("The key in grouping map is " + key1);
-
+				
 				if (r.has(key1)) {
 					// System.out.println("Found key " + key1);
 					if (r.get(key1) instanceof String) {
@@ -160,11 +166,15 @@ public class RestPropValidation {
 						JSONArray jArray = r.getJSONArray(tmpStr);
 						boolean tempResult = false;
 						for (int i = 0; i < jArray.length(); i++) {
-							boolean tmpBoolean = searchGroupingValidation(
-									jArray.getJSONObject(i), vSub, offset + 1);
-							tempResult = tempResult || tmpBoolean;
+							Object obj = jArray.get(i);
+							if (obj instanceof JSONObject){
+								boolean tmpBoolean = searchGroupingValidation(jArray.getJSONObject(i), vSub, offset + 1);
+								tempResult = tempResult || tmpBoolean;
+							}
 						}
 						result = result & tempResult;
+					} else {
+						//TODO: HERE FOR SMART CHART
 					}
 				}
 			}
@@ -172,6 +182,22 @@ public class RestPropValidation {
 		return result;
 	}
 
+	
+	public void corrArray(JSONArray array, JSONObject v) throws JSONException{
+		for (int i = 0; i < array.length(); i++){
+			if (array.get(i) instanceof JSONObject)
+				corr(array.getJSONObject(i), v);
+			if (array.get(i) instanceof JSONArray)
+				corrArray(array.getJSONArray(i), v);
+			else {
+				//TODO:  HERE!!!!!!!!!!!!
+				//if it is object(string) inside a jsonarray....
+			}
+		}
+	}
+	
+	
+	
 	public void corr(JSONObject r, JSONObject v) throws JSONException {
 
 		Iterator<String> vIterator = v.keys(); // for each group
@@ -203,8 +229,14 @@ public class RestPropValidation {
 				corr((JSONObject) o, v);
 			} else if (o instanceof JSONArray) {				
 				JSONArray tmp = (JSONArray) o;
-				for (int i = 0; i < tmp.length(); i++)
-					corr(tmp.getJSONObject(i), v);
+				corrArray(tmp, v);  //now using another recursive function
+				
+				/*for (int i = 0; i < tmp.length(); i++){
+					if (tmp.get(i) instanceof JSONObject)
+						corr(tmp.getJSONObject(i), v);  
+					//if (tmp.get(i) instanceof JSONArray)
+					//TODO: HERE!!!!!!!!!
+				}*/
 			} else if (o instanceof String || o instanceof Integer) {
 				// from response
 				if (o instanceof Integer) {

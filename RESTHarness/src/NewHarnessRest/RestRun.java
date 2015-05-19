@@ -134,8 +134,11 @@ public class RestRun implements Runnable {
 				overideParam(obj.getJSONObject(key));
 			} else if (obj.get(key) instanceof JSONArray){
 				JSONArray temp = (JSONArray) obj.get(key);
-				for (int i=0; i < temp.length(); i++)
-					overideParam(temp.getJSONObject(i));
+				for (int i=0; i < temp.length(); i++){
+					//TODO: HANDLE OBJECT BUT NOT JSONOBJECT
+					if (temp.get(i) instanceof JSONObject)
+						overideParam(temp.getJSONObject(i));
+				}
 			}
 		}
 		
@@ -225,6 +228,7 @@ public class RestRun implements Runnable {
 		service = sv.getServiceString();
 		
 		URL url = new URL(targetURL + "/" + nURL);
+		//URL url = new URL("http://prasannavm2:8080/dcTrackApp/api/v1/measurements");
 		
 		// sending request
 		String authString = "admin:raritan";
@@ -232,7 +236,7 @@ public class RestRun implements Runnable {
 				.getBytes()));
 		try {
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
+			System.out.println("URL IS " + con.getURL().getPath());
 			
 			if(!_sessionID.equals("") && sv.isCookieNeeded())
 				con.setRequestProperty("Cookie", _sessionID);
@@ -245,6 +249,7 @@ public class RestRun implements Runnable {
 			// very important below: GET should not set setDoOutput(true)
 			if (!isGet) {
 				con.setDoOutput(true);
+				//con.getou
 				OutputStream os = con.getOutputStream();
 				os.write(nPayload.getBytes("UTF-8"));
 				os.flush();

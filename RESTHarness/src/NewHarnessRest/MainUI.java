@@ -11,6 +11,12 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,6 +30,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -220,7 +227,7 @@ public class MainUI {
 					}
 				}
 				else{
-					listFileView.setTargetURL("https://" + s + "/api/v1");
+					listFileView.setTargetURL(s + "/api/v1");
 					try {
 						libsView.reconnDB(s);
 					} catch (InstantiationException | IllegalAccessException e) {
@@ -337,6 +344,34 @@ public class MainUI {
 			//???
 			e.printStackTrace();
 		}			
+		
+		
+		
+		String abc = "[[\"2015/04/13 00:00:00 +0000\", null],[\"2015/04/14 00:00:00 +0000\", null]]";
+		try {
+			JSONArray t = new JSONArray(abc);
+			System.out.println(t.toString());
+			//ArrayList<ArrayList<String>> ttt = new ArrayList<ArrayList<String>>();
+			//ArrayList<String> a = new ArrayList<String>();
+			//a.add("1");
+			//a.add("2");
+			//ArrayList<String> b = new ArrayList<String>();
+			//b.add("1");
+			//b.add("2");
+			//ttt.add(a);
+			//System.out.println(ttt.contains(b));
+			//Iterator<?> it = t.
+			Date d = new Date();
+			d.setTime(Long.parseLong("1361980800000"));  //TODO: TEST HERE
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E");
+			String time = dateFormat.format(d);
+			System.out.println(time);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}	
 	
 }
