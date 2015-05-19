@@ -183,15 +183,27 @@ public class RestPropValidation {
 	}
 
 	
-	public void corrArray(JSONArray array, JSONObject v) throws JSONException{
+	public void corrArray(JSONArray array, JSONObject v, String key) throws JSONException{
 		for (int i = 0; i < array.length(); i++){
 			if (array.get(i) instanceof JSONObject)
 				corr(array.getJSONObject(i), v);
-			if (array.get(i) instanceof JSONArray)
-				corrArray(array.getJSONArray(i), v);
-			else {
-				//TODO:  HERE!!!!!!!!!!!!
-				//if it is object(string) inside a jsonarray....
+			else if (array.get(i) instanceof JSONArray)
+				corrArray(array.getJSONArray(i), v, key);
+			else {  
+				//for case it is an normal array, inside array there should not be name-value pairs
+				//so we do not support override function for this case
+				String toStringValue = String.valueOf(array.get(i));
+				//JSONObject temp = new JSONObject(toStringValue);
+				System.out.println("tostirngvalue is here!!!!!!!!!!!! with key is " + key + " and index " + i + " length is " + toStringValue);
+			//}				
+				if (v.has("0") && v.getJSONObject("0").has(key)
+						&& toStringValue.equals(
+								v.getJSONObject("0").get(key).toString())) {
+					v.getJSONObject("0").remove(key);
+					result[0] += seperator + "Found key-value pair: "
+							+ key + ":" + toStringValue;
+					result[0] += "  and value as expected.";
+				}
 			}
 		}
 	}
@@ -224,12 +236,12 @@ public class RestPropValidation {
 			// System.out.println("now start searching a pair in group 0 with the key "
 			// + key);
 			Object o = r.get(key);
-
+			String toStringValue = null;
 			if (o instanceof JSONObject) { // reversal				
 				corr((JSONObject) o, v);
 			} else if (o instanceof JSONArray) {				
 				JSONArray tmp = (JSONArray) o;
-				corrArray(tmp, v);  //now using another recursive function
+				corrArray(tmp, v, key);  //now using another recursive function
 				
 				/*for (int i = 0; i < tmp.length(); i++){
 					if (tmp.get(i) instanceof JSONObject)
@@ -237,12 +249,18 @@ public class RestPropValidation {
 					//if (tmp.get(i) instanceof JSONArray)
 					//TODO: HERE!!!!!!!!!
 				}*/
-			} else if (o instanceof String || o instanceof Integer) {
+			} else if (o instanceof ArrayList){
+				
+				toStringValue = String.valueOf(((ArrayList) o).get(0));
+				System.out.println("tostirngvalue ArrayList[0] is " + toStringValue);
+			}
+			else {//if (o instanceof String || o instanceof Integer ) {
 				// from response
-				if (o instanceof Integer) {
-					// System.out.println("The key " + key +
-					// " is a integer with data " + o);
-				}				
+				
+				//if (o instanceof Integer) {
+					toStringValue = String.valueOf(o);
+					System.out.println("tostirngvalue is " + toStringValue);
+				//}				
 				if (v.has("0") && v.getJSONObject("0").has(key)) {
 					// System.out.println("now we found the pair of " + key +
 					// " in group 0");
@@ -259,7 +277,8 @@ public class RestPropValidation {
 								.toString().toString().split("_")[1];
 						String value = overideProps.get(varName); // find from
 																	// NOGROUP
-						if (o.toString().equals(value)) {
+						//if (o.toString().equals(value)) {
+						if (toStringValue.equals(value)) {
 							v.getJSONObject("0").remove(key);
 							result[0] += seperator + "Found key-value pair: "
 									+ key + ":" + o.toString();
@@ -277,8 +296,7 @@ public class RestPropValidation {
 					}
 				} else {
 				}
-			} else {
-			}
+			} 
 		}		
 	}
 }

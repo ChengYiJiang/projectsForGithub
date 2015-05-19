@@ -228,7 +228,7 @@ public class RestRun implements Runnable {
 		service = sv.getServiceString();
 		
 		URL url = new URL(targetURL + "/" + nURL);
-		//URL url = new URL("http://prasannavm2:8080/dcTrackApp/api/v1/measurements");
+		
 		
 		// sending request
 		String authString = "admin:raritan";

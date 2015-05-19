@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.Box;
@@ -361,6 +362,12 @@ public class MainUI {
 			//ttt.add(a);
 			//System.out.println(ttt.contains(b));
 			//Iterator<?> it = t.
+			List<String> jarray = new ArrayList<String>();
+			jarray.add("1");
+			jarray.add("2");
+			
+			if (jarray instanceof JSONArray)
+				System.out.println("jarray is array!!!");
 			Date d = new Date();
 			d.setTime(Long.parseLong("1361980800000"));  //TODO: TEST HERE
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E");
